@@ -29,7 +29,7 @@ class ATM
             print "Nhập số tiền cần nạp: "
             amount = gets.chomp.to_i
 
-            @current_user.account.deposit(amount)
+            @current_user.account.deposit(amount) { |amt| amt > 1000 ? (amt * 0.05).round(2) : 0 }
         when 3
             print "Nhập số tiền cần rút: "
             amount1 = gets.chomp.to_i
@@ -98,6 +98,15 @@ class ATM
         @current_user = user
 
         puts "Đăng nhập thành công"
+    end
+
+    def set_dynamic_fee()
+        @current_user.account.set_fee_calculator do |amount|
+            hour = Time.now.hour
+            base = 0.02
+            extra = (hour >= 20 || hour <= 6) ? 0.01 : 0
+            (amount * (base + extra)).round(2)
+        end
     end
 end
 
