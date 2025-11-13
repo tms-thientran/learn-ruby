@@ -65,7 +65,7 @@ class Analyzer
   end
 
   def get_large_files
-    @large_files = @files_data.sort_by { |file| -file[:size] }.first(20)
+    @large_files = @files_data.sort_by { |file| -file[:size] }.find { |f| f[:size] > 100 * 1024 * 1024 } || []
   end
 
   def total_size_release
@@ -84,8 +84,8 @@ class Analyzer
       puts "="*50
       puts "Kết quả phân tích".upcase
       puts "Tổng file: #{@files_data.size}"
-      puts "Trùng: #{@duplicates.size} | Tạm: #{@temp_files.size} | Cũ: #{@old_files.size} | Lớn: #{@large_files.size}"
-      puts "Dung lượng có thể giải phóng: #{total_size_release} B"
+      puts "Trùng: #{@duplicates.size} | Tạm: #{@temp_files.size} | Cũ: #{@old_files.size} | Lớn trên 100MB: #{@large_files.size}"
+      puts "Dung lượng có thể giải phóng: #{total_size_release.to_f.to_unit}"
       puts "="*50
     end
 end

@@ -39,12 +39,12 @@ class SafeClean
     show_banner
 
     #B1
-    selected_path = select_directory
+    selected_paths = select_directory
 
-    return unless selected_path
+    return if selected_paths.empty?
     #B2
-    scanner = Scanner.new
-    files_data = scanner_files(scanner, selected_path)
+    scanner = Scanner.new(@config.config['exclude_dirs'])
+    files_data = scanner_files(scanner, selected_paths)
 
     if files_data.empty?
       puts "Không có file để phân tích"
@@ -111,15 +111,36 @@ class SafeClean
 
       choices << { name: "Nhập đường dẫn khác ...", value: :custom }
 
-      selected = @prompt.select("",choices, per_page: 10)
+      selected = @prompt.multi_select("Có thể chọn nhiều thư mục",choices, per_page: 10, help: "(↑↓ di chuyển, Space chọn, Enter xác nhận)")
 
-      if selected == :custom
-        custom_path = @prompt.ask("Nhập đường dẫn thư mục: ", require: true) do |q|
-          q.validate -> (input) { Dir.exist?(File.expand_path(input)) }
-          q.messages[:valid?] = "Thư mục không tồn tại"
+      if selected.include?(:custom)
+        selected.delete(:custom)
+
+        loop do
+          custom_path = @prompt.ask("Nhập đường dẫn thư mục: ", require: false) do |q|
+            q.validate -> (input) { Dir.exist?(File.expand_path(input)) }
+            q.messages[:valid?] = "Thư mục không tồn tại"
+          end
+          break if custom_path.nil? || custom_path.empty?
+
+          selected << File.expand_path(custom_path)
+
+          add_more = @prompt.ask("Thêm thư mục khác ?")
+
+          break unless add_more
         end
-        return File.expand_path(custom_path)
       end
+
+      if selected.empty?
+        puts @pastel.yellow("⚠️ Bạn chưa chọn thư mục nào")
+        return []
+      end
+
+      puts "\n#{@pastel.green("✅ Đã chọn #{selected.size} thư mục:")}"
+      selected.each_with_index do |path, idx|
+        puts @pastel.dim("   #{idx + 1}. #{path}")
+      end
+      puts ""
 
       selected
     end
@@ -147,29 +168,41 @@ class SafeClean
       end
     end
 
-    def scanner_files(scanner, selected_path)
-      puts @pastel.yellow("🔍 Đang đếm files...")
+    def scanner_files(scanner, paths)
+      return if paths.empty?
 
-      total_files = Scanner.count_files(selected_path)
+      all_files_data = []
 
-      if (total_files == 0)
-        return []
+      paths.each_with_index do |path, idx|
+        puts @pastel.cyan("\n🔍 [#{idx + 1}/#{paths.size}] Đang quét: #{path}")
+        puts @pastel.cyan("   Đang đếm file...")
+        
+        total_files = Scanner.count_files(path, @config.config['exclude_dirs'])
+        
+        if total_files == 0
+          puts @pastel.yellow("   ⚠️ Không có file nào")
+          next
+        end
+        
+        puts @pastel.cyan("   📊 Tìm thấy #{total_files} file")
+        
+        # Tạo progress bar cho thư mục này
+        bar = TTY::ProgressBar.new(
+          "   [:bar] :percent :current/:total | :eta",
+          total: total_files,
+          width: 45
+        )
+        
+        # Quét và thêm vào kết quả
+        files_data = scanner.scan(path, bar)
+        all_files_data.concat(files_data) if files_data && !files_data.empty?
+        
+        puts @pastel.green("✅ Xong!")
       end
+      
+      puts @pastel.bright_green("\n🎉 Tổng cộng quét được: #{all_files_data.size} file từ #{paths.size} thư mục")
 
-      puts @pastel.yellow("👀 Tìm thấy #{total_files} files")
-
-      # Tạo progress bar
-      bar = TTY::ProgressBar.new(
-        "[:bar] :percent :current/:total | :eta",
-        total: total_files,
-        width: 50
-      )
-
-      scanner.scan(selected_path, bar)
-
-      puts @pastel.yellow("\n✅ Quá trình quét thành công")
-
-      scanner.data_files
+      all_files_data
     end
 
     def handle_export(exporter)

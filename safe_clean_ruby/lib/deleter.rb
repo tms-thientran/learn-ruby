@@ -69,7 +69,7 @@ class Deleter
 
       FileUtils.mkdir_p(dirname)
 
-      FileUtils.copy(file_path, destinate_path)
+      FileUtils.mv(file_path, destinate_path)
 
       @deleted_files << {
         original_path: file_path,

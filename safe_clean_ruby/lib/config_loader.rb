@@ -1,7 +1,8 @@
 class ConfigLoader
   attr_reader :config
   DEFAULT_CONFIG = {
-    'default_paths' => ["~/Downloads/SequenceDesignExample", "~/Documents", "~/Desktop"]
+    'default_paths' => ["~/Downloads/SequenceDesignExample", "~/Documents/ruby-oop", "~/Desktop"],
+    'exclude_dirs' => ['.git', 'node_modules', '.bundle', 'vendor', 'Library', 'System', 'Applications']
   }.freeze
 
   def initialize(config_path = nil)

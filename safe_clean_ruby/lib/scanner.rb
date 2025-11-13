@@ -1,30 +1,36 @@
 require 'fileutils'
 require 'digest'
+require 'pry'
 
 class Scanner
   attr_reader :data_files
 
-  def initialize
-    @data_files = []
+  def initialize(exclude_dirs)
+    @exclude_dirs = exclude_dirs
   end
 
   def scan(path, bar = nil)
     puts "Đang quét thư mục #{path}"
+    data_files = []
 
     # Khi quét thì sẽ lấy toàn bộ file trog path ở trên, sẽ lấy cả file trong thư mục con nữa. Khi lấy về sẽ trả về dữ liệu tương ứng với file.
-    exclude_dirs = ['.git', 'node_modules', '.bundle', 'vendor', 'Library', 'System', 'Applications']
+    begin
+      Dir.glob(File.join(path, "**", "*")).each do |file_path|
+        next if File.directory?(file_path)
 
-    Dir.glob(File.join(path, "**", "*")).each do |file_path|
-      next if File.directory?(file_path)
+        next if @exclude_dirs.any? { |dir| file_path.include?(dir) }
 
-      next if exclude_dirs.any? { |dir| file_path.include?(dir) }
+        file_info = collect_file_info(file_path)
 
-      file_info = collect_file_info(file_path)
+        data_files << file_info if file_info
 
-      @data_files << file_info if file_info
-
-      bar&.advance(1)
+        bar&.advance(1)
+      end
+    rescue => e
+      puts "⚠️ Lỗi khi quét: #{e.message}"
     end
+
+    data_files
   end
 
   def collect_file_info(file_path)
@@ -58,9 +64,8 @@ class Scanner
     nil # Nếu lỗi thì trả về nil
   end
 
-  def self.count_files(path)
+  def self.count_files(path, exclude_dirs = [])
     count = 0
-    exclude_dirs = ['.git', 'node_modules', '.bundle', 'vendor']
 
     Dir.glob(File.join(path, "**", "*")).each do |file_path|
       next if File.directory?(file_path)

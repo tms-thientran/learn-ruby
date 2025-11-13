@@ -77,21 +77,21 @@ class Rollback
 
   def handle_rollback_file(f, folder_rollback)
     deleted_path = f[:deleted_file_path]
+    original_path = f[:original_path]
 
     unless File.exist?(deleted_path)
       @failed_files << { file_path: deleted_path, reason: 'File không tồn tại' }
       return false
     end
-    destinate_path = File.join(folder_rollback, deleted_path.sub(/^safe_delete\//, ''))
 
-    if File.exist?(destinate_path)
-      @failed_files << { file_path: destinate_path, reason: 'File đích đã tồn tại' }
+    if File.exist?(original_path)
+      @failed_files << { file_path: original_path, reason: 'File đích đã tồn tại' }
       return false
     end
     
     begin
-      FileUtils.mkdir_p(File.dirname(destinate_path))
-      FileUtils.mv(deleted_path, destinate_path)
+      FileUtils.mkdir_p(File.dirname(original_path))
+      FileUtils.mv(deleted_path, original_path)
 
       @restored_files << f
 

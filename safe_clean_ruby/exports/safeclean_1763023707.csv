@@ -1,0 +1,6 @@
+Path,Filename,Size,Extension,Last Modified,Last Accessed,Warning Type,Duplicate Group,Mark for Delete,Note
+/Users/tomosia/Documents/ruby-oop/index.rb,index.rb,2797,.rb,2025-11-08,2025-11-13,OK,"","",""
+/Users/tomosia/Documents/ruby-oop/models/account.rb,account.rb,1517,.rb,2025-11-09,2025-11-13,OK,"","",""
+/Users/tomosia/Documents/ruby-oop/models/transaction.rb,transaction.rb,320,.rb,2025-11-09,2025-11-13,OK,"","",""
+/Users/tomosia/Documents/ruby-oop/models/user.rb,user.rb,232,.rb,2025-11-08,2025-11-09,OK,"","",""
+/Users/tomosia/Documents/ruby-oop/services/transaction_service.rb,transaction_service.rb,571,.rb,2025-11-09,2025-11-13,OK,"","x",""
