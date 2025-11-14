@@ -102,5 +102,3 @@ class SafeCleanWebApp < Sinatra::Base
     run!
   end
 end
-
-SafeCleanWebApp.start('../exports/safeclean_1763107086.csv')
