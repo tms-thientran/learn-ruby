@@ -250,11 +250,19 @@ class SafeClean
     exporter.export(option)
   end
 
+  def web(csv_file)
+    return unless csv_file
+
+    require_relative 'web/app'
+    SafeCleanWebApp.start(csv_file)
+  end
+
   def option_reviews(file_csv)
     return unless file_csv
 
     review = @prompt.select('Bạn muốn review file?') do |menu|
       menu.choice 'Mở Finder', :finder
+      menu.choice 'Mở WEB', :web
       menu.choice 'Tôi tự mở', :self_open
     end
 
@@ -262,6 +270,8 @@ class SafeClean
     when :finder
       system("open #{file_csv}") if RUBY_PLATFORM.include?('darwin')
       puts @pastel.green('Đã mở file CSV')
+    when :web
+      web(file_csv)
     when :self_open
       nil
     end

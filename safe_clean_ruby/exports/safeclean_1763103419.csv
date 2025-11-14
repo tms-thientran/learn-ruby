@@ -1,11 +1,11 @@
 Path,Filename,Size,Extension,Last Modified,Last Accessed,Warning Type,Duplicate Group,Mark for Delete,Note
-/Users/tomosia/Downloads/SequenceDesignExample/demo.cache,demo.cache,0,.cache,2025-11-11,2025-11-11,TEMP,"","",""
-/Users/tomosia/Downloads/SequenceDesignExample/demo.txt,demo.txt,0,.txt,2025-11-14,2025-11-14,DUPLICATE,"","",""
+/Users/tomosia/Downloads/SequenceDesignExample/demo.cache,demo.cache,0,.cache,2025-11-11,2025-11-11,TEMP,"",TRUE,Quan trong do nhe
+/Users/tomosia/Downloads/SequenceDesignExample/demo.txt,demo.txt,0,.txt,2025-11-14,2025-11-14,DUPLICATE,"",TRUE,12313
 /Users/tomosia/Downloads/SequenceDesignExample/file.txt,file.txt,0,.txt,2025-11-14,2025-11-14,DUPLICATE,"","",""
 /Users/tomosia/Downloads/SequenceDesignExample/system_architecture_diagram.html,system_architecture_diagram.html,58152,.html,2025-11-03,2025-11-04,OK,"","",""
 /Users/tomosia/Downloads/SequenceDesignExample/system_architecture_diagram.md,system_architecture_diagram.md,38060,.md,2025-11-03,2025-11-03,OK,"","",""
 /Users/tomosia/Documents/ruby-oop/index.rb,index.rb,2797,.rb,2025-11-08,2025-11-14,OK,"","",""
-/Users/tomosia/Documents/ruby-oop/models/account.rb,account.rb,1517,.rb,2025-11-09,2025-11-14,OK,"","",""
+/Users/tomosia/Documents/ruby-oop/models/account.rb,account.rb,1517,.rb,2025-11-09,2025-11-14,OK,"",TRUE,""
 /Users/tomosia/Documents/ruby-oop/models/transaction.rb,transaction.rb,320,.rb,2025-11-09,2025-11-14,OK,"","",""
-/Users/tomosia/Documents/ruby-oop/models/user.rb,user.rb,232,.rb,2025-11-08,2025-11-14,OK,"","",""
+/Users/tomosia/Documents/ruby-oop/models/user.rb,user.rb,232,.rb,2025-11-08,2025-11-14,OK,"",TRUE,""
 /Users/tomosia/Documents/ruby-oop/services/transaction_service.rb,transaction_service.rb,571,.rb,2025-11-09,2025-11-14,OK,"","",""
