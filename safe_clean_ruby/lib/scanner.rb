@@ -7,30 +7,45 @@ class Scanner
 
   def initialize(exclude_dirs)
     @exclude_dirs = exclude_dirs
+    @filters = []
+  end
+
+  def filter(proc)
+    @filters << proc if proc.is_a?(Proc)
+
+    self
   end
 
   def scan(path, bar = nil)
-    puts "Đang quét thư mục #{path}"
     data_files = []
 
-    # Khi quét thì sẽ lấy toàn bộ file trog path ở trên, sẽ lấy cả file trong thư mục con nữa. Khi lấy về sẽ trả về dữ liệu tương ứng với file.
+    # Khi quét thì sẽ lấy toàn bộ file trog path ở trên, sẽ lấy cả file trong thư mục con nữa.
     begin
-      Dir.glob(File.join(path, "**", "*")).each do |file_path|
+      Dir.glob(File.join(path, '**', '*')).each do |file_path|
         next if File.directory?(file_path)
-
         next if @exclude_dirs.any? { |dir| file_path.include?(dir) }
 
         file_info = collect_file_info(file_path)
+        bar&.advance(1)
+
+        next unless file_info
+
+        # Xử lý filter proc ở đây
+        next unless handle_filter?(file_info)
 
         data_files << file_info if file_info
-
-        bar&.advance(1)
       end
-    rescue => e
+    rescue StandardError => e
       puts "⚠️ Lỗi khi quét: #{e.message}"
     end
 
     data_files
+  end
+
+  def handle_filter?(file_info)
+    return true if @filters.empty?
+
+    @filters.all? { |filter| filter.call(file_info) }
   end
 
   def collect_file_info(file_path)
@@ -48,7 +63,7 @@ class Scanner
       readable: File.readable?(file_path),       # Có đọc được không
       writable: File.writable?(file_path)        # Có ghi được không
     }
-  rescue => e
+  rescue StandardError => e
     puts "Không thể đọc file #{file_path} - #{e.message}"
     nil
   end
@@ -58,25 +73,25 @@ class Scanner
   def calculate_hash(file_path)
     # Chỉ hash file nhỏ hơn 100MB để tránh chậm
     return nil if File.size(file_path) > 100 * 1024 * 1024
-    
+
     Digest::SHA256.file(file_path).hexdigest
-  rescue
+  rescue StandardError
     nil # Nếu lỗi thì trả về nil
   end
 
   def self.count_files(path, exclude_dirs = [])
     count = 0
 
-    Dir.glob(File.join(path, "**", "*")).each do |file_path|
+    Dir.glob(File.join(path, '**', '*')).each do |file_path|
       next if File.directory?(file_path)
 
       next if exclude_dirs.any? { |dir| file_path.include?(dir) }
 
-      count +=1
+      count += 1
     end
 
     count
-  rescue
+  rescue StandardError
     0
   end
 end

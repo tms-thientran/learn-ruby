@@ -1,0 +1,25 @@
+source 'https://rubygems.org'
+
+ruby '>= 3.0.0'
+
+# Core gems
+gem 'pastel'
+gem 'tty-prompt'
+gem 'tty-progressbar'
+
+# Development & Code Quality
+group :development do
+  gem 'rubocop', '~> 1.60', require: false
+  gem 'rubocop-performance', '~> 1.20', require: false
+  gem 'rubocop-rake', '~> 0.6', require: false
+
+  # Debugging
+  gem 'pry'
+  gem 'pry-byebug'
+end
+
+# Testing (optional - thêm khi làm bài tập 19)
+group :test do
+  gem 'rspec', '~> 3.12'
+  gem 'rspec-mocks', '~> 3.12'
+end

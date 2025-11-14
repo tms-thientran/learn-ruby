@@ -1,0 +1,54 @@
+{
+  // ============================================
+  // RUBY - Tắt auto format
+  // ============================================
+
+  "[ruby]": {
+    "editor.formatOnSave": false,
+    "editor.formatOnType": false,
+    "editor.formatOnPaste": false
+  },
+
+  // Tắt RuboCop auto-correct
+  "ruby.rubocop.onSave": false,
+  "ruby.rubocop.autocorrect": false,
+  "ruby.format": false,
+
+  // ============================================
+  // EDITOR - General settings
+  // ============================================
+
+  "files.autoSave": "afterDelay",     // Tự động lưu sau 1s
+  "files.autoSaveDelay": 1000,        // Delay 1000ms = 1s
+
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true,
+  "editor.trimAutoWhitespace": true,
+  "files.trimTrailingWhitespace": true,
+  "files.insertFinalNewline": true,
+  "files.trimFinalNewlines": true,
+
+  // ============================================
+  // FILES - Exclude from search/watch
+  // ============================================
+
+  "files.exclude": {
+    "**/.git": true,
+    "**/.DS_Store": true,
+    "**/node_modules": true
+  },
+
+  "search.exclude": {
+    "**/.git": true,
+    "exports/**": true,
+    "logs/**": true,
+    "safe_delete/**": true
+  },
+
+  "files.watcherExclude": {
+    "**/.git": true,
+    "exports/**": true,
+    "logs/**": true,
+    "safe_delete/**": true
+  }
+}

@@ -1,0 +1,226 @@
+# RuboCop Configuration for SafeClean Project
+# Ruby version: 3.0+
+
+AllCops:
+  TargetRubyVersion: 3.0
+  NewCops: enable
+  SuggestExtensions: false
+  Exclude:
+    - 'vendor/**/*'
+    - 'node_modules/**/*'
+    - 'tmp/**/*'
+    - 'logs/**/*'
+    - 'exports/**/*'
+    - 'safe_delete/**/*'
+    - 'db/schema.rb'
+    - 'bin/**/*'
+
+# Plugins (dùng plugins: thay vì require:)
+plugins:
+  - rubocop-performance
+  - rubocop-rake
+
+# ============================================
+# LAYOUT - Định dạng code
+# ============================================
+
+Layout/LineLength:
+  Max: 120
+  Exclude:
+    - 'spec/**/*'
+    - 'test/**/*'
+
+Layout/MultilineMethodCallIndentation:
+  EnforcedStyle: indented
+
+Layout/FirstArrayElementIndentation:
+  EnforcedStyle: consistent
+
+Layout/FirstHashElementIndentation:
+  EnforcedStyle: consistent
+
+Layout/SpaceInsideHashLiteralBraces:
+  EnforcedStyle: space
+
+Layout/EmptyLinesAroundAttributeAccessor:
+  Enabled: true
+
+Layout/EmptyLineAfterGuardClause:
+  Enabled: true
+
+Layout/TrailingWhitespace:
+  Enabled: true
+
+Layout/EndOfLine:
+  EnforcedStyle: lf
+
+# ============================================
+# STYLE - Phong cách code
+# ============================================
+
+Style/StringLiterals:
+  EnforcedStyle: single_quotes
+  ConsistentQuotesInMultiline: true
+
+Style/Documentation:
+  Enabled: false # Tắt yêu cầu documentation cho mọi class
+
+Style/FrozenStringLiteralComment:
+  Enabled: false # Không bắt buộc frozen_string_literal
+
+Style/SymbolArray:
+  EnforcedStyle: brackets
+
+Style/HashSyntax:
+  EnforcedStyle: ruby19
+  EnforcedShorthandSyntax: either
+
+Style/Lambda:
+  EnforcedStyle: literal
+
+Style/TrailingCommaInArrayLiteral:
+  EnforcedStyleForMultiline: no_comma
+
+Style/TrailingCommaInHashLiteral:
+  EnforcedStyleForMultiline: no_comma
+
+Style/TrailingCommaInArguments:
+  EnforcedStyleForMultiline: no_comma
+
+Style/BlockDelimiters:
+  EnforcedStyle: line_count_based
+  ProceduralMethods:
+    - benchmark
+    - bm
+    - bmbm
+    - measure
+
+Style/ClassAndModuleChildren:
+  Enabled: false # Cho phép cả Compact và Nested style
+
+Style/GuardClause:
+  Enabled: true
+  MinBodyLength: 1
+
+Style/NumericLiterals:
+  MinDigits: 7
+  Strict: false
+
+# ============================================
+# METRICS - Độ phức tạp code
+# ============================================
+
+Metrics/MethodLength:
+  Max: 50
+  Exclude:
+    - 'spec/**/*'
+    - 'test/**/*'
+
+Metrics/ClassLength:
+  Max: 300
+  Exclude:
+    - 'spec/**/*'
+    - 'test/**/*'
+
+Metrics/ModuleLength:
+  Max: 300
+
+Metrics/BlockLength:
+  Max: 50
+  Exclude:
+    - 'spec/**/*'
+    - 'test/**/*'
+    - 'config/**/*'
+    - 'Rakefile'
+    - '**/*.rake'
+
+Metrics/AbcSize:
+  Max: 50
+  Exclude:
+    - 'spec/**/*'
+    - 'test/**/*'
+
+Metrics/CyclomaticComplexity:
+  Max: 10
+
+Metrics/PerceivedComplexity:
+  Max: 10
+
+Metrics/ParameterLists:
+  Max: 5
+  MaxOptionalParameters: 3
+
+# ============================================
+# LINT - Phát hiện lỗi
+# ============================================
+
+Lint/RaiseException:
+  Enabled: true
+
+Lint/StructNewOverride:
+  Enabled: true
+
+Lint/UnusedMethodArgument:
+  AllowUnusedKeywordArguments: true
+
+Lint/UnusedBlockArgument:
+  AllowUnusedKeywordArguments: true
+
+Lint/AmbiguousBlockAssociation:
+  Enabled: true
+  Exclude:
+    - 'spec/**/*'
+
+Lint/Debugger:
+  Enabled: true
+
+# ============================================
+# NAMING - Quy tắc đặt tên
+# ============================================
+
+# Fix: PredicateName -> PredicatePrefix
+Naming/PredicatePrefix:
+  Enabled: true
+  ForbiddenPrefixes:
+    - is_
+    - have_
+  AllowedMethods:
+    - is_a?
+
+Naming/VariableNumber:
+  EnforcedStyle: normalcase
+
+Naming/MemoizedInstanceVariableName:
+  EnforcedStyleForLeadingUnderscores: optional
+
+# ============================================
+# PERFORMANCE - Tối ưu performance
+# ============================================
+
+Performance/Casecmp:
+  Enabled: true
+
+Performance/StringReplacement:
+  Enabled: true
+
+Performance/FlatMap:
+  Enabled: true
+
+Performance/ReverseEach:
+  Enabled: true
+
+Performance/UnfreezeString:
+  Enabled: true
+
+Performance/DeletePrefix:
+  Enabled: true
+
+Performance/DeleteSuffix:
+  Enabled: true
+
+# ============================================
+# BUNDLER
+# ============================================
+
+Bundler/OrderedGems:
+  Enabled: false
